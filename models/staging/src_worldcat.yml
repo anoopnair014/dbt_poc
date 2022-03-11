@@ -1,0 +1,38 @@
+version: 2
+
+sources:
+  - name: RAW
+    description: A clone of the Worldcat application database.
+    database: WORLDCAT
+    tables:
+      - name: INSTITUTION
+        description: Raw institution data from WorldCat.
+        columns:
+          - name: data
+            description: Variant column to hold raw institution data.
+            tests:
+              - not_null
+            
+      - name: WORLDCAT_LOCALHOLDINGSDETAIL
+        description: Raw localholdingsdetail data from WorldCat.
+        columns:
+          - name: data
+            description: Variant column to hold raw localholdingsdetail data.
+            tests:
+              - not_null
+            
+      - name: WORLDCAT_NOXWC
+        description: Raw non-XWC bibliographic data from WorldCat.
+        columns:
+          - name: data
+            description: Variant column to hold raw non-XWC bibliographic data.
+            tests:
+              - not_null
+            
+      - name: WORLDCAT_XWC
+        description: Raw XWC bibliographic data from WorldCat.
+        columns:
+          - name: data
+            description: Variant column to hold raw XWC bibliographic data.
+            tests:
+              - not_null
