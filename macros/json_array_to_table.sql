@@ -7,7 +7,22 @@ select distinct
 
 from {{ model_name }},
    lateral flatten(input => {{ json_column }}:{{ array_path }}) f,
-   lateral flatten(input => object_keys(f.value)) k
+   lateral flatten(input => 
+      case
+         when
+            contains(f.value, '[') 
+         then
+            f.value::array 
+         when
+            not contains(f.value, '[') 
+         then
+            to_array(f.this) 
+         else
+            f.this 
+      end
+   ) g,
+   lateral flatten(input => object_keys(g.value)) k
+
 order by 1
 {% endset %}
 
@@ -28,11 +43,25 @@ select
 
 m.{{ foreign_key }},
 {% for key in results_list %}
-f.value:{{ key }}::string as {{ key }}
+g.value:{{ key }}::varchar as {{ key }}
 {% if not loop.last %},{% endif %}
 {% endfor %}
 
 from {{ model_name }} m,
-   lateral flatten(input => {{ json_column }}:{{ array_path }}) f
+   lateral flatten(input => {{ json_column }}:{{ array_path }}) f,
+   lateral flatten(input => 
+      case
+         when
+            contains(f.value, '[') 
+         then
+            f.value::array 
+         when
+            not contains(f.value, '[') 
+         then
+            to_array(f.this) 
+         else
+            f.this 
+      end
+   ) g
 
 {% endmacro %}

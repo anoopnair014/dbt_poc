@@ -1,4 +1,4 @@
-{% macro flatten_json(model_name, json_column, startswith_filter) %}
+{% macro flatten_json(model_name, foreign_key, json_column, startswith_filter) %}
 
 {% set json_column_query %}
 select distinct
@@ -27,12 +27,12 @@ order by 1
 --{{ log("results_list: " ~ results_list, True) }}
 
 select 
-
+m.{{ foreign_key }},
 {% for full_path, column_name in results_list %}
 {{ json_column }}:{{ full_path }}::varchar as {{ column_name }}
 {% if not loop.last %},{% endif %}
 {% endfor %}
 
-from {{ model_name }}
+from {{ model_name }} m
 
 {% endmacro %}

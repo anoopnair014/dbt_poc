@@ -1,6 +1,6 @@
 {{ config(
     schema='raw', 
-    materialized='view'
+    materialized='table'
 ) }}
 
 with source_raw_worldcat_xwc as (
@@ -19,7 +19,7 @@ with source_raw_worldcat_xwc as (
     data:"dataSource"::STRING as dataSource
   FROM
     {{ source('RAW', 'WORLDCAT_XWC') }}
-  LIMIT 10
+  LIMIT 10000
 
 )
 
