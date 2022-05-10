@@ -10,11 +10,11 @@ from {{ model_name }},
    lateral flatten(input => 
       case
          when
-            contains(f.value, '[') 
+            startswith(f.this, '[') 
          then
             f.value::array 
          when
-            not contains(f.value, '[') 
+            not startswith(f.this, '[') 
          then
             to_array(f.this) 
          else
@@ -52,11 +52,11 @@ from {{ model_name }} m,
    lateral flatten(input => 
       case
          when
-            contains(f.value, '[') 
+            startswith(f.this, '[') 
          then
             f.value::array 
          when
-            not contains(f.value, '[') 
+            not startswith(f.this, '[') 
          then
             to_array(f.this) 
          else
