@@ -9,7 +9,7 @@ select distinct
 from {{ model_name }},
 
         lateral flatten({{ json_column }}, recursive=>true) f
-where typeof(f.value) <> 'OBJECT' and startswith(full_path, '{{ startswith_filter }}')
+where typeof(f.value) not in  ('OBJECT','ARRAY') and startswith(full_path, '{{ startswith_filter }}')
 order by 1
 {% endset %}
 
